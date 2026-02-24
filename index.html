@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Inventory</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .product-card {
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.02);
+    }
+
+    .vendor-sidebar {
+      position: sticky;
+      top: 80px;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+
+  <nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://via.placeholder.com/40" alt="Logo" width="40" height="40" class="d-inline-block align-text-top me-2 rounded">
+        <strong>ST.LOTUS SUPERMARKET</strong>
+      </a>
+    </div>
+  </nav>
+
+  <div class="container-fluid px-4 mt-4">
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="vendor-sidebar">
+          <h5 class="mb-3">Main Vendors</h5>
+          <div class="list-group shadow-sm">
+            <button class="list-group-item list-group-item-action active" onclick="filterVendor('all')">အားလုံး</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Ar Li Gon (Electronic)')">Ar Li Gon</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('A May Latt Yar')">A May Latt Yar</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Asia Golden Sea Co.Ltd.TGI')">Asia Golden Sea</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('CGM Co.ltd')">CGM Co.ltd</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Centig Food Distribution(Goody) Co.Ltd')">Centig Food Distribution(Goody) Co.Ltd</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Dahlia Products Co.Ltd')">Dahlia Products Co.Ltd</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Dagon Win Win Co.ltd')">Dagon Win Win Co.ltd</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Daw Bu Trading')">Daw Bu Trading</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('Rainbow Bridge Distribution')">Rainbow Bridge Distribution</button>
+            <button class="list-group-item list-group-item-action" onclick="filterVendor('La Min Myinttar (Plastic)')">La Min Myinttar (Plastic)</button>
+            
+      </div>
+    </div>
+  </div>
+
+      <div class="col-md-9">
+        <div class="input-group mb-4 shadow-sm">
+          <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i>🔍</span>
+          <input type="text" id="searchInput" class="form-control border-start-0" placeholder="အမည် (သို့) ကုတ် (သို့) အစစာလုံးဖြင့် ရှာရန်..." onkeyup="searchProduct()">
+        </div>
+
+        <div class="row" id="productGrid">
+
+          <script>
+            function searchProduct() {
+              let input = document.getElementById('searchInput').value.toLowerCase();
+              let items = document.getElementsByClassName('product-item');
+              for (let i = 0; i < items.length; i++) {
+                let text = items[i].innerText.toLowerCase();
+                if (text.includes(input)) {
+                  items[i].style.display = "";
+                } else {
+                  items[i].style.display = "none";
+                }
+              }
+            }
+
+            function filterVendor(vendorName) {
+                let items = document.querySelectorAll('.product-item');
+    
+                items.forEach(item => {
+                    // item ထဲက Vendor badge ထဲက စာသားကို ယူပြီး စစ်ဆေးတာပါ
+                    let itemVendor = item.getAttribute('data-vendor').trim();
+        
+                    if (vendorName === 'all' || itemVendor === vendorName) {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "none";
+                    }
+                });
+            }
+</script>
+<script>
+    const products = [
+        { code: "#A001", en: "Apple", mm: "ပန်းသီး", vendor: "Vendor A", img: "https://via.placeholder.com/150" },
+        { code: "#B002", en: "Banana", mm: "ငှက်ပျောသီး", vendor: "Vendor B", img: "https://via.placeholder.com/150" },
+        { code: "#C003", en: "Orange", mm: "လိမ္မော်သီး", vendor: "Vendor C", img: "https://via.placeholder.com/150" },
+        // ပစ္စည်းအသစ်တွေကို ဒီ list ထဲမှာပဲ ထပ်တိုးသွားရုံပါပဲ
+    ];
+
+    const grid = document.getElementById('productGrid');
+
+    // စာရင်းထဲက ပစ္စည်းတွေကို Card အဖြစ် ပြောင်းလဲပေးတဲ့အပိုင်း
+    products.forEach(p => {
+        grid.innerHTML += `
+            <div class="col-lg-4 col-md-6 mb-4 product-item" data-vendor="${p.vendor.trim()}">
+                <div class="card h-100 shadow-sm border-0">
+                    <img src="${p.img}" class="card-img-top" alt="${p.en}">
+                    <div class="card-body">
+                        <h6 class="text-primary small">${p.code}</h6>
+                        <h5 class="card-title">${p.en}</h5>
+                        <p class="card-text text-muted small">${p.mm}</p>
+                        <span class="badge bg-light text-dark border">${p.vendor}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+</script>
+<script>
+    // Google Sheets က ရလာတဲ့ CSV Link ကို ဒီမှာ ထည့်ပါ
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcio8D-MWOZYDRzX_j7hv79fPpIHW93zOPKtAJGNoqJ_5pkAT1YYnp8yoPwL7wozgiIfXxHKSHwQZj/pub?output=csv';
+
+    async function loadProducts() {
+        const response = await fetch(sheetUrl);
+        const data = await response.text();
+        
+        // CSV ကို စာကြောင်းအလိုက် ခွဲထုတ်ခြင်း
+        const rows = data.split('\n').slice(1); // ခေါင်းစဉ်တန်းကို ဖယ်ထုတ်
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = ''; // လက်ရှိရှိတာတွေကို ရှင်းထုတ်
+
+        rows.forEach(row => {
+            const columns = row.split(',');
+            if(columns.length < 5) return; // အချက်အလက် မပြည့်စုံရင် ကျော်သွားမယ်
+
+            const p = {
+                code: columns[0],
+                en: columns[1],
+                mm: columns[2],
+                vendor: columns[3],
+                img: columns[4]
+            };
+
+            grid.innerHTML += `
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 product-item" data-vendor="${p.vendor}">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="p-2"> <img src="${p.img}" class="card-img-top rounded" style="height: 150px; object-fit: contain; background: #f8f9fa;">
+                        </div>
+                        <div class="card-body p-2 text-center"> <h6 class="text-primary small mb-1" style="font-size: 0.7rem;">${p.code}</h6>
+                            <p class="card-title fw-bold mb-0" style="font-size: 0.85rem; line-height: 1.2;">${p.en}</p>
+                            <p class="text-muted small mb-2" style="font-size: 0.75rem;">${p.mm}</p>
+                            <span class="badge bg-light text-dark border" style="font-size: 0.65rem;">${p.vendor}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // စာမျက်နှာ စပွင့်တာနဲ့ Data ခေါ်ခိုင်းမယ်
+    loadProducts();
+</script>
