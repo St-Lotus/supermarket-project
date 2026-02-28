@@ -67,39 +67,44 @@
     }
 
     // Backend (Render) မှ Data ဆွဲယူသည့် Function
-    async function loadProducts() {
-      try {
+async function loadProducts() {
+    try {
+        // API URL ကို မျက်တောင်ဖွင့်ပိတ် ' ' ထဲမှာ သေချာထည့်ပါ
         const response = await fetch('https://supermarket-project-17xz.onrender.com/api/products');
-        const products = await response.json();
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = ''; 
+        const products = await response.json(); // JSON data အဖြစ် ပြောင်းယူခြင်း
 
-        if (products.length === 0) {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = ''; // အဟောင်းတွေကို ရှင်းထုတ်ခြင်း
+
+        if (!products || products.length === 0) {
             grid.innerHTML = '<div class="col-12 text-center"><h5>Database ထဲမှာ ပစ္စည်းမရှိသေးပါ...</h5></div>';
             return;
         }
 
+        // Loop ပတ်ပြီး Card လေးတွေ ထုတ်ပေးခြင်း
         products.forEach(p => {
-          grid.innerHTML += `
-            <div class="col-lg-4 col-md-6 mb-4 product-item" data-vendor="${p.vendor || 'Unknown'}">
-                <div class="card h-100 shadow-sm border-0 product-card">
-                    <img src="${p.image_url || 'https://via.placeholder.com/150'}" class="card-img-top product-img" alt="${p.name_en}">
-                    <div class="card-body">
-                        <h6 class="text-primary small">${p.category || 'General'}</h6>
-                        <h5 class="card-title">${p.name_en}</h5>
-                        <p class="card-text text-muted small">${p.name_mm}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="fw-bold">${p.price} MMK</span>
-                            <span class="badge bg-light text-dark border">${p.vendor || 'No Vendor'}</span>
+            const card = `
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow-sm border-0 product-card">
+                        <img src="${p.image_url}" class="card-img-top product-img" 
+                             alt="${p.name_en}" onerror="this.src='https://via.placeholder.com/150'">
+                        <div class="card-body">
+                            <h6 class="text-primary small">${p.category || 'General'}</h6>
+                            <h5 class="card-title">${p.name_en}</h5>
+                            <p class="card-text text-muted small">${p.name_mm}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">${p.price} MMK</span>
+                                <span class="badge bg-light text-dark border">${p.vendor || 'Unknown'}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>`;
+                </div>`;
+            grid.innerHTML += card;
         });
-      } catch (error) {
-        console.error("Error:", error);
-      }
+    } catch (error) {
+        console.error("Error loading products:", error);
     }
+}
 
     // Page စဖွင့်တာနဲ့ Data ခေါ်ခိုင်းခြင်း
     loadProducts();
