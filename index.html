@@ -6,10 +6,11 @@
   <title>ST.LOTUS SUPERMARKET Inventory</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .product-card { transition: transform 0.2s; }
-    .product-card:hover { transform: scale(1.02); }
+    .product-card { transition: transform 0.2s; border: none !important; border-radius: 12px; overflow: hidden; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
     .vendor-sidebar { position: sticky; top: 80px; }
-    .product-img { height: 200px; object-fit: cover; }
+    .product-img { height: 200px; object-fit: cover; background-color: #f8f9fa; }
+    .list-group-item.active { background-color: #0d6efd !important; border-color: #0d6efd !important; }
   </style>
 </head>
 <body class="bg-light">
@@ -26,87 +27,114 @@
     <div class="row">
       <div class="col-md-3 mb-4">
         <div class="vendor-sidebar">
-          <h5 class="mb-3">Main Vendors</h5>
-          <div class="list-group shadow-sm">
-            <button class="list-group-item list-group-item-action active" onclick="filterVendor('all')">အားလုံး</button>
-            <button class="list-group-item list-group-item-action" onclick="filterVendor('Ar Li Gon')">Ar Li Gon</button>
-            <button class="list-group-item list-group-item-action" onclick="filterVendor('A May Latt Yar')">A May Latt Yar</button>
-            </div>
+          <h5 class="mb-3 fw-bold">Main Vendors</h5>
+          <div class="list-group shadow-sm" id="vendorList">
+            <a href="#" class="list-group-item list-group-item-action active">အားလုံး</a>
+            <a href="#" class="list-group-item list-group-item-action">Ar Li Gon</a>
+            <a href="#" class="list-group-item list-group-item-action">A May Latt Yar</a>
+            <a href="#" class="list-group-item list-group-item-action">CGM</a>
+          </div>
         </div>
       </div>
 
       <div class="col-md-9">
-        <div class="input-group mb-4 shadow-sm">
-          <span class="input-group-text bg-white">🔍</span>
-          <input type="text" id="searchInput" class="form-control" placeholder="ရှာဖွေရန်..." onkeyup="searchProduct()">
+        <div class="input-group mb-4 shadow-sm border-0">
+          <span class="input-group-text bg-white border-end-0">🔍</span>
+          <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="ပစ္စည်းအမည် သို့မဟုတ် မြန်မာအမည်ဖြင့် ရှာဖွေရန်...">
         </div>
+        
         <div class="row" id="productGrid">
-            </div>
+          </div>
       </div>
     </div>
   </div>
 
   <script>
-    // ရှာဖွေသည့် Function
-    function searchProduct() {
-      let input = document.getElementById('searchInput').value.toLowerCase();
-      let items = document.getElementsByClassName('product-item');
-      for (let i = 0; i < items.length; i++) {
-        let text = items[i].innerText.toLowerCase();
-        items[i].style.display = text.includes(input) ? "" : "none";
+    let allProducts = []; 
+    let activeVendor = 'အားလုံး';
+
+    // ၁။ Database မှ Data ဆွဲယူခြင်း
+    async function loadProducts() {
+      try {
+        const response = await fetch('https://supermarket-project-17xz.onrender.com/api/products');
+        allProducts = await response.json();
+        renderProducts(allProducts);
+      } catch (error) {
+        console.error("Error loading data:", error);
+        document.getElementById('productGrid').innerHTML = '<p class="text-danger text-center">Server ချိတ်ဆက်မှု မအောင်မြင်ပါ။</p>';
       }
     }
 
-    // Vendor အလိုက်စစ်ထုတ်သည့် Function
-    function filterVendor(vendorName) {
-      let items = document.querySelectorAll('.product-item');
-      items.forEach(item => {
-        let itemVendor = item.getAttribute('data-vendor');
-        item.style.display = (vendorName === 'all' || itemVendor === vendorName) ? "block" : "none";
+    // ၂။ ပစ္စည်းများကို Website ပေါ်တွင် ပြသခြင်း
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      
+      if (products.length === 0) {
+        grid.innerHTML = '<div class="col-12 text-center mt-5 text-muted"><h5>ရှာဖွေနေသော ပစ္စည်းမရှိပါ။</h5></div>';
+        return;
+      }
+
+      products.forEach(p => {
+        grid.innerHTML += `
+          <div class="col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 shadow-sm product-card">
+              <img src="${p.image_url}" class="card-img-top product-img" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+              <div class="card-body">
+                <h6 class="text-primary small fw-bold">${p.category || 'General'}</h6>
+                <h5 class="card-title h6 fw-bold">${p.name_en}</h5>
+                <p class="card-text text-muted small mb-3">${p.name_mm}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-danger">${p.price} MMK</span>
+                  <span class="badge bg-light text-dark border fw-normal small">${p.vendor || 'Unknown'}</span>
+                </div>
+              </div>
+            </div>
+          </div>`;
       });
     }
 
-    // Backend (Render) မှ Data ဆွဲယူသည့် Function
-async function loadProducts() {
-    try {
-        // API URL ကို မျက်တောင်ဖွင့်ပိတ် ' ' ထဲမှာ သေချာထည့်ပါ
-        const response = await fetch('https://supermarket-project-17xz.onrender.com/api/products');
-        const products = await response.json(); // JSON data အဖြစ် ပြောင်းယူခြင်း
+    // ၃။ Search နှင့် Vendor ကို ပေါင်းပြီး စစ်ထုတ်ခြင်း
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtered = allProducts.filter(p => {
+        const nameEN = (p.name_en || "").toLowerCase();
+        const nameMM = (p.name_mm || "");
+        const productVendor = (p.vendor || "").trim();
 
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = ''; // အဟောင်းတွေကို ရှင်းထုတ်ခြင်း
+        const matchesSearch = nameEN.includes(searchTerm) || nameMM.includes(searchTerm);
+        // Vendor Logic
+        const matchesVendor = (activeVendor === 'အားလုံး') || (productVendor === activeVendor);
+        
+        return matchesSearch && matchesVendor;
+      });
 
-        if (!products || products.length === 0) {
-            grid.innerHTML = '<div class="col-12 text-center"><h5>Database ထဲမှာ ပစ္စည်းမရှိသေးပါ...</h5></div>';
-            return;
-        }
-
-        // Loop ပတ်ပြီး Card လေးတွေ ထုတ်ပေးခြင်း
-        products.forEach(p => {
-            const card = `
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100 shadow-sm border-0 product-card">
-                        <img src="${p.image_url}" class="card-img-top product-img" 
-                             alt="${p.name_en}" onerror="this.src='https://via.placeholder.com/150'">
-                        <div class="card-body">
-                            <h6 class="text-primary small">${p.category || 'General'}</h6>
-                            <h5 class="card-title">${p.name_en}</h5>
-                            <p class="card-text text-muted small">${p.name_mm}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="fw-bold">${p.price} MMK</span>
-                                <span class="badge bg-light text-dark border">${p.vendor || 'Unknown'}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            grid.innerHTML += card;
-        });
-    } catch (error) {
-        console.error("Error loading products:", error);
+      renderProducts(filtered);
     }
-}
 
-    // Page စဖွင့်တာနဲ့ Data ခေါ်ခိုင်းခြင်း
+    // ၄။ Events များကို ချိတ်ဆက်ခြင်း
+    // Search input အတွက်
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+    // Sidebar Vendor list နှိပ်သည့်အတွက်
+    document.querySelectorAll('.list-group-item').forEach(item => {
+      item.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // အရောင်ပြောင်းရန်
+        document.querySelectorAll('.list-group-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        
+        // နှိပ်လိုက်သော Vendor နာမည်ကို သိမ်းရန်
+        activeVendor = this.innerText.trim();
+        console.log("Filtering by:", activeVendor); // Debugging အတွက်
+        
+        applyFilters();
+      });
+    });
+
+    // Start loading
     loadProducts();
   </script>
 </body>
