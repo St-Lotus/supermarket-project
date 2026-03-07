@@ -126,7 +126,11 @@
         grid.innerHTML += `
           <div class="col-md-4 col-lg-3 mb-4">
             <div class="card h-100 shadow-sm product-card border-0">
-              <img src="${p.image_url}" class="card-img-top product-img" style="cursor: pointer;" onclick="openModal('${p.image_url}')"onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+              <img src="${p.image_url}" 
+                   class="card-img-top product-img" 
+                   style="cursor: pointer;" 
+                   onclick="openModal('${p.image_url}')"
+                   onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
               <div class="card-body">
                 <h6 class="text-primary small fw-bold">${p.category || 'General'}</h6>
                 <h5 class="card-title h6 fw-bold">${p.name_en}</h5>
