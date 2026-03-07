@@ -104,6 +104,17 @@
       }
     }
 
+    // ပုံကို အကြီးပြရန်
+    function openModal(src) {
+      document.getElementById('imageModal').style.display = 'flex';
+      document.getElementById('modalImg').src = src;
+  }
+
+    // ပုံကို ပြန်ပိတ်ရန်
+      function closeModal() {
+      document.getElementById('imageModal').style.display = 'none';
+  }
+
     function renderProducts(products) {
       const grid = document.getElementById('productGrid');
       grid.innerHTML = '';
@@ -115,7 +126,7 @@
         grid.innerHTML += `
           <div class="col-md-4 col-lg-3 mb-4">
             <div class="card h-100 shadow-sm product-card border-0">
-              <img src="${p.image_url}" class="card-img-top product-img" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+              <img src="${p.image_url}" class="card-img-top product-img" style="cursor: pointer;" onclick="openModal('${p.image_url}')"onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
               <div class="card-body">
                 <h6 class="text-primary small fw-bold">${p.category || 'General'}</h6>
                 <h5 class="card-title h6 fw-bold">${p.name_en}</h5>
@@ -157,5 +168,9 @@
 
     // loadProducts() ကို ဤနေရာမှ ဖြုတ်လိုက်ပါပြီ (Password မှန်မှ ခေါ်မည်ဖြစ်သောကြောင့်ဖြစ်သည်)
   </script>
+    <div id="imageModal" style="display: none; position: fixed; z-index: 10000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; cursor: zoom-out;" onclick="closeModal()">
+    <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+    <img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
+  </div>
 </body>
 </html>
