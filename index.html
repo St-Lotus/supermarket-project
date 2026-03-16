@@ -33,25 +33,37 @@ body {
     overflow-y: auto;
     flex-shrink: 0; /* Zoom ချဲ့ရင်လည်း ကျုံ့မသွားအောင်ပါ */
 }
-/* ၄။ Product Card များရှိမည့် ညာဘက်အခြမ်း */
+/* ၄။ Product Card များကို တစ်ခုစီ သီးသန့်ဖြစ်အောင် ထိန်းညှိခြင်း */
+.product-card {
+    width: 280px !important;    /* အကျယ်ကို ပုံသေထားပါ */
+    min-width: 280px !important;
+    height: 500px !important;   /* Stock Code ဆန့်အောင် အမြင့်ကို ၅၀၀ ထားပါ */
+    margin: 15px !important;    /* ပစ္စည်း ၂ ခုတည်းရှိရင်လည်း တစ်ခုနဲ့တစ်ခု မထပ်အောင်ပါ */
+    display: inline-flex !important; /* ပစ္စည်းနည်းရင်လည်း သူ့ဘောင်နဲ့သူ သီးသန့်ဖြစ်စေဖို့ပါ */
+    flex-direction: column;
+    vertical-align: top;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+/* ၅။ ညာဘက်အခြမ်း Content နယ်မြေကို နေရာချခြင်း */
 #product-container {
     flex-grow: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: block !important;  /* Flex ကြောင့် ပုံတွေထပ်နေတာကို ကာကွယ်ရန် */
     padding: 20px;
+    min-width: 950px;           /* ညာဘက်အခြမ်းကိုလည်း အကျယ်အနည်းဆုံး သတ်မှတ်ပါ */
 }
-/* ၅။ Card တစ်ခုချင်းစီရဲ့ Layout (ပုံ ၂ အောက်ရောက်တာကို ဖြေရှင်းရန်) */
-.product-card {
-    width: 280px !important;
-    height: 500px !important; /* အမြင့်ကို အသေပေးလိုက်ပါ */
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+/* ၆။ Stock Code ကို Card ရဲ့ အောက်ခြေမှာ အမြဲရှိနေစေရန် */
+.card-body {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    flex-shrink: 0;
+    height: 100%;
+}
+.stock-code {
+    margin-top: auto;           /* စာသားတွေ ဘယ်လောက်တိုတို အောက်ခြေကို တွန်းချထားမှာပါ */
+    font-weight: bold;
+    color: #d9534f;
+    padding-top: 15px;
 }
 #loginOverlay {
     position: fixed !important; /* Screen ပေါ်မှာ အမြဲကပ်နေစေဖို့ပါ */
