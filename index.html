@@ -57,6 +57,27 @@ body {
     overflow: hidden;
     flex-shrink: 0;
 }
+#loginOverlay {
+    position: fixed !important; /* Screen ပေါ်မှာ အမြဲကပ်နေစေဖို့ပါ */
+    top: 0;
+    left: 0;
+    width: 100vw !important;    /* Browser ရဲ့ အကျယ်အပြည့် ယူလိုက်တာပါ */
+    height: 100vh !important;   /* Browser ရဲ့ အမြင့်အပြည့် ယူလိုက်တာပါ */
+    background-color: rgba(255, 255, 255, 0.98); /* နောက်ခံကို အဖြူရောင် ခပ်ပျစ်ပျစ် ထားပါ */
+    display: flex;
+    justify-content: center;    /* Login Box ကို အလယ်တည့်တည့် ရောက်စေဖို့ပါ */
+    align-items: center;        /* Login Box ကို အလယ်တည့်တည့် ရောက်စေဖို့ပါ */
+    z-index: 99999 !important;  /* အခြားအရာအားလုံးရဲ့ အပေါ်မှာ ရှိနေစေဖို့ပါ */
+}
+
+.login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 350px;               /* Login Box ရဲ့ အကျယ်ကို ပုံသေထားပါ */
+    text-align: center;
+}  
   </style>
 </head>
 <body class="bg-light">
