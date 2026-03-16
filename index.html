@@ -10,28 +10,52 @@
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
     .vendor-sidebar { position: sticky; top: 80px; }
     .product-img { height: 180px; width: 100%; object-fit: contain; padding: 10px; background-color: #ffffff; }
-  body {
-    min-width: 1400px; /* Website တစ်ခုလုံးကို ကျဉ်းမသွားအောင် ဘောင်ခတ်လိုက်တာပါ */
+/* ၁။ Website တစ်ခုလုံးကို ပုံသေ အကျယ်သတ်မှတ်ခြင်း */
+body {
+    min-width: 1600px !important; /* Zoom ဘယ်လောက်ဆွဲဆွဲ ဒီအကျယ်အောက် မကျသွားအောင် တားထားတာပါ */
+    overflow-x: auto !important;
+    background-color: #f8f9fa;
 }
-    .product-card {
+
+/* ၂။ Sidebar နဲ့ Main Content ကို Flex နဲ့ ခွဲခြင်း (ပုံ ၁ ထပ်နေတာကို ဖြေရှင်းရန်) */
+.container-fluid {
+    display: flex !important;
+    flex-wrap: nowrap !important; /* ဘယ်လိုမှ အောက်ကို ဆင်းမသွားအောင်ပါ */
+    width: 1600px;
+    margin: 0 auto;
+}
+
+/* ၃။ ဘယ်ဘက် Sidebar ကို အသေထားခြင်း */
+.vendor-sidebar {
     width: 280px !important;
-    min-height: 480px;      /* အမြင့်ကို ၄၈၀ အထိ တိုးလိုက်ပါ (စာသားများရင်လည်း ဆန့်အောင်လို့ပါ) */
+    min-width: 280px !important;
+    position: sticky;
+    top: 20px;
+    height: 90vh;
+    overflow-y: auto;
+    flex-shrink: 0; /* Zoom ချဲ့ရင်လည်း ကျုံ့မသွားအောင်ပါ */
+}
+
+/* ၄။ Product Card များရှိမည့် ညာဘက်အခြမ်း */
+#product-container {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* ၅။ Card တစ်ခုချင်းစီရဲ့ Layout (ပုံ ၂ အောက်ရောက်တာကို ဖြေရှင်းရန်) */
+.product-card {
+    width: 280px !important;
+    height: 500px !important; /* အမြင့်ကို အသေပေးလိုက်ပါ */
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* စာသားနဲ့ Stock Code တွေကို အပေါ်နဲ့အောက် ညီအောင် တွန်းပေးပါတယ် */
-    padding-bottom: 15px;
-    margin: 10px;
-    background: #fff;
-    border: 1px solid #eee !important;
-}
-.card-body {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;           /* Card ထဲမှာ နေရာအပြည့်ယူစေဖို့ပါ */
-}
-.stock-code-container {
-    margin-top: auto;       /* Stock Code ကို Card ရဲ့ အောက်ခြေမှာပဲ အမြဲကပ်နေစေမှာပါ */
-    padding-top: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
 }
   </style>
 </head>
