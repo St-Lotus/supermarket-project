@@ -103,38 +103,36 @@ body {
 }
 
 .hero-image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* မျက်နှာပြင်အလိုက် အလိုအလျောက်ညှိပေးပါမည် /
+    display: flex;
+    justify-content: center;
     gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 30px;
+    flex-wrap: wrap; /* Screen သေးရင် အောက်ဆင်းပေးဖို့ပါ */
 }
 
 .hero-img-box {
-    background: rgba(255, 255, 255, 0.1); / ပုံရဲ့ နောက်ခံကို အဖြူဖျော့လေး ခံထားပေးပါ /
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15); /* အဖြူရောင်ဖျော့ဖျော့လေး နောက်ခံထားပါ */
     padding: 15px;
+    border-radius: 15px;
+    width: 140px;
     text-align: center;
+    transition: 0.3s;
 }
 
 .hero-img-box:hover {
-    transform: translateY(-5px); /* ပုံပေါ်ကို Mouse တင်ရင် အပေါ်ကို နည်းနည်းတက်စေဖို့ပါ */
-    background-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-5px);
 }
 
 .hero-img-box img {
-    max-height: 100px; / ပုံအရွယ်အစားကို ထိန်းညှိရန် */
+    height: 80px; /* ပုံရဲ့ အမြင့်ကို ထိန်းချုပ်ပါ */
     width: auto;
-    object-fit: contain;
+    margin-bottom: 10px;
 }
 
 .img-label {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #fff;
+    color: white;
+    font-size: 12px;
     font-weight: bold;
-    text-transform: uppercase; /* စာလုံးအားလုံးကို အကြီးပြောင်းပါ */
     display: block;
 }
   </style>
@@ -184,31 +182,27 @@ body {
   <div class="hero-image-grid-container mt-5">
     <div class="hero-image-grid">
         <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/71xpS8eL7-L._AC_SL1500_.jpg" alt="Product" class="img-fluid">
-            <span class="img-label">Cookware</span>
+            <img src="https://www.pngarts.com/files/3/Coca-Cola-PNG-Image-with-Transparent-Background.png" alt="Drink">
+            <span class="img-label">Soft Drinks</span>
         </div>
         <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/61S9aVnS0LL._AC_SL1500_.jpg" alt="Product" class="img-fluid">
+            <img src="https://www.pngmart.com/files/7/Headphone-PNG-Transparent-Picture.png" alt="Headphone">
             <span class="img-label">Electronics</span>
         </div>
         <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/81v7T6m-6TL._AC_SL1500_.jpg" alt="Product" class="img-fluid">
-            <span class="img-label">Home Decor</span>
+            <img src="https://www.pngarts.com/files/4/Potato-Chips-PNG-Transparent-Image.png" alt="Snack">
+            <span class="img-label">Snacks</span>
         </div>
         <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/51-m79S-xGL._AC_SL1000_.jpg" alt="Product" class="img-fluid">
-            <span class="img-label">Kitchen</span>
+            <img src="https://www.pngmart.com/files/16/Liquid-Detergent-Bottle-PNG-Transparent.png" alt="Home">
+            <span class="img-label">Household</span>
         </div>
         <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/61OAn7vLOnL._AC_SL1000_.jpg" alt="Product" class="img-fluid">
-            <span class="img-label">Appliances</span>
-        </div>
-        <div class="hero-img-box">
-            <img src="https://m.media-amazon.com/images/I/71Lsh9C1N8L._AC_SL1500_.jpg" alt="Product" class="img-fluid">
-            <span class="img-label">Accessories</span>
+            <img src="https://www.pngmart.com/files/2/Shampoo-PNG-Transparent-Image.png" alt="Care">
+            <span class="img-label">Personal Care</span>
         </div>
     </div>
-  </div>
+</div>
   <script>
     let allProducts = []; 
     let activeVendor = 'အားလုံး';
