@@ -103,30 +103,31 @@ body {
 }
 
 .hero-image-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap; /* Screen သေးရင် အောက်ဆင်းပေးဖို့ပါ */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ၂ ခုစီ ဘေးချင်းယှဉ်ပြပါမယ် */
+    gap: 15px;
 }
 
 .hero-img-box {
-    background: rgba(255, 255, 255, 0.15); /* အဖြူရောင်ဖျော့ဖျော့လေး နောက်ခံထားပါ */
-    padding: 15px;
-    border-radius: 15px;
-    width: 140px;
-    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: 0.3s;
+    height: 150px;
 }
 
 .hero-img-box:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
 }
 
 .hero-img-box img {
-    height: 80px; /* ပုံရဲ့ အမြင့်ကို ထိန်းချုပ်ပါ */
+    max-height: 100px;
     width: auto;
-    margin-bottom: 10px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); /* ပုံတွေကို ပေါ်လွင်စေဖို့ Shadow ထည့်ပေးထားပါတယ် */
 }
 
 .img-label {
@@ -162,11 +163,32 @@ body {
 
   <div class="hero-section bg-black text-white py-5">
     <div class="container py-5">
-        <p class="text-danger mb-2">အခုပဲ လာရောက်ဝယ်ယူနိုင်ပါပြီ။</p>
-        <h1 class="display-3 fw-bold">သင်နှစ်သက်သမျှ အရာအားလုံးကို<br>တစ်နေရာတည်းမှာ ရရှိနိုင်ဖို့။</h1>
-        <button class="btn btn-primary px-4 py-2 mt-4 rounded-0">အခုပဲ ဝယ်ယူရန်</button>
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <p class="text-danger mb-2">အခုပဲ လာရောက်ဝယ်ယူနိုင်ပါပြီ။</p>
+                <h1 class="display-3 fw-bold">သင်နှစ်သက်သမျှ အရာအားလုံးကို<br>တစ်နေရာတည်းမှာ ရရှိနိုင်ဖို့။</h1>
+                <button class="btn btn-primary px-4 py-2 mt-4 rounded-0">အခုပဲ ဝယ်ယူရန်</button>
+            </div>
+            
+            <div class="col-md-5 mt-5 mt-md-0">
+                <div class="hero-image-grid">
+                    <div class="hero-img-box">
+                        <img src="https://www.pngarts.com/files/3/Coca-Cola-PNG-Image-with-Transparent-Background.png" alt="Drink">
+                    </div>
+                    <div class="hero-img-box">
+                        <img src="https://www.pngmart.com/files/7/Headphone-PNG-Transparent-Picture.png" alt="Electronics">
+                    </div>
+                    <div class="hero-img-box">
+                        <img src="https://www.pngarts.com/files/4/Potato-Chips-PNG-Transparent-Image.png" alt="Snack">
+                    </div>
+                    <div class="hero-img-box">
+                        <img src="https://www.pngmart.com/files/16/Liquid-Detergent-Bottle-PNG-Transparent.png" alt="Household">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
   <div class="container-fluid px-4 mt-4">
     <div class="row">
