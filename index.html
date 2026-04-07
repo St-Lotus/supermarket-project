@@ -33,25 +33,34 @@ body {
     overflow-y: auto;
     flex-shrink: 0; /* Zoom ချဲ့ရင်လည်း ကျုံ့မသွားအောင်ပါ */
 }
-/* ၄။ Product Card များကို တစ်ခုစီ သီးသန့်ဖြစ်အောင် ထိန်းညှိခြင်း */
+/* Product Card ကို ပုံ ၂ အတိုင်း ပြားပြားလေးနဲ့ Modern ဖြစ်အောင် ပြင်ခြင်း */
 .product-card {
-    width: 280px !important;    /* အကျယ်ကို ပုံသေထားပါ */
-    min-width: 280px !important;
-    height: 500px !important;   /* Stock Code ဆန့်အောင် အမြင့်ကို ၅၀၀ ထားပါ */
-    margin: 15px !important;    /* ပစ္စည်း ၂ ခုတည်းရှိရင်လည်း တစ်ခုနဲ့တစ်ခု မထပ်အောင်ပါ */
-    display: inline-flex !important; /* ပစ္စည်းနည်းရင်လည်း သူ့ဘောင်နဲ့သူ သီးသန့်ဖြစ်စေဖို့ပါ */
-    flex-direction: column;
-    vertical-align: top;
+    width: 300px !important;
+    border: none !important;
+    border-radius: 0 !important; /* ဒေါင့်ချိုးဖျောက်ပါ */
+    margin: 15px !important;
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
 }
-/* ၅။ ညာဘက်အခြမ်း Content နယ်မြေကို နေရာချခြင်း */
-#product-container {
-    flex-grow: 1;
-    display: block !important;  /* Flex ကြောင့် ပုံတွေထပ်နေတာကို ကာကွယ်ရန် */
+
+.product-card:hover {
+    transform: translateY(-10px);
+}
+
+.product-img {
+    height: 250px !important;
+    background-color: #f8f8f8;
+    object-fit: contain;
     padding: 20px;
-    min-width: 950px;           /* ညာဘက်အခြမ်းကိုလည်း အကျယ်အနည်းဆုံး သတ်မှတ်ပါ */
+}
+/* Container ကို အလယ်တည့်တည့်ပြန်ပို့ခြင်း */
+#product-container {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 40px 0;
+    max-width: 1400px;
+    margin: 0 auto !important;
 }
 /* ၆။ Stock Code ကို Card ရဲ့ အောက်ခြေမှာ အမြဲရှိနေစေရန် */
 .card-body {
