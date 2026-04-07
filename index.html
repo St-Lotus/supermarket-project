@@ -93,7 +93,53 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     width: 350px;               /* Login Box ရဲ့ အကျယ်ကို ပုံသေထားပါ */
     text-align: center;
-}  
+}
+/* ပုံများကို တစ်တန်းတည်း ညီစီစေရန် (CSS Grid) */
+.hero-image-grid-container {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+.hero-image-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* ပုံ ၆ ပုံကို တစ်တန်းတည်းပြပါ */
+    gap: 15px; /* ပုံတစ်ခုစီကြား ခြားနားချက် */
+    max-width: 1400px;
+    width: 90%;
+}
+
+.hero-img-box {
+    background-color: rgba(255, 255, 255, 0.08); /* နောက်ခံကို အမှောင်ဖျော့ဖျော့ ထားပါ */
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-img-box:hover {
+    transform: translateY(-5px); /* ပုံပေါ်ကို Mouse တင်ရင် အပေါ်ကို နည်းနည်းတက်စေဖို့ပါ */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.hero-img-box img {
+    height: 120px; /* ပုံရဲ့ အမြင့်ကို ပုံသေထားပါ */
+    object-fit: contain; /* ပုံစံမပျက်ဘဲ အထဲမှာဆန့်အောင်လို့ပါ */
+}
+
+.img-label {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase; /* စာလုံးအားလုံးကို အကြီးပြောင်းပါ */
+    display: block;
+}
   </style>
 </head>
 <body class="bg-light">
@@ -137,6 +183,31 @@ body {
           <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="ရှာဖွေရန်...">
         </div>
         <div class="row" id="productGrid">
+   <div class="hero-image-grid-container mt-5">
+    <div class="hero-image-grid">
+        <div class="hero-img-box">
+            <img src="path/to/your/image1.jpg" alt="Product 1" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 1</span>
+        </div>
+        <div class="hero-img-box">
+            <img src="path/to/your/image2.jpg" alt="Product 2" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 2</span>
+        </div>
+        <div class="hero-img-box">
+            <img src="path/to/your/image3.jpg" alt="Product 3" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 3</span>
+        </div>
+        <div class="hero-img-box">
+            <img src="path/to/your/image4.jpg" alt="Product 4" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 4</span>
+        </div>
+        <div class="hero-img-box">
+            <img src="path/to/your/image5.jpg" alt="Product 5" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 5</span>
+        </div>
+        <div class="hero-img-box">
+            <img src="path/to/your/image6.jpg" alt="Product 6" class="img-fluid">
+            <span class="img-label text-center">PRODUCT 6</span>         
           </div>
       </div>
     </div>
