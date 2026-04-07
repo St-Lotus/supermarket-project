@@ -104,22 +104,18 @@ body {
 
 .hero-image-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); /* ပုံ ၆ ပုံကို တစ်တန်းတည်းပြပါ */
-    gap: 15px; /* ပုံတစ်ခုစီကြား ခြားနားချက် */
-    max-width: 1400px;
-    width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* မျက်နှာပြင်အလိုက် အလိုအလျောက်ညှိပေးပါမည် /
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
 }
 
 .hero-img-box {
-    background-color: rgba(255, 255, 255, 0.08); /* နောက်ခံကို အမှောင်ဖျော့ဖျော့ ထားပါ */
+    background: rgba(255, 255, 255, 0.1); / ပုံရဲ့ နောက်ခံကို အဖြူဖျော့လေး ခံထားပေးပါ /
+    border-radius: 10px;
     padding: 15px;
-    border-radius: 12px;
     text-align: center;
-    transition: transform 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .hero-img-box:hover {
@@ -128,8 +124,9 @@ body {
 }
 
 .hero-img-box img {
-    height: 120px; /* ပုံရဲ့ အမြင့်ကို ပုံသေထားပါ */
-    object-fit: contain; /* ပုံစံမပျက်ဘဲ အထဲမှာဆန့်အောင်လို့ပါ */
+    max-height: 100px; / ပုံအရွယ်အစားကို ထိန်းညှိရန် */
+    width: auto;
+    object-fit: contain;
 }
 
 .img-label {
@@ -182,37 +179,36 @@ body {
           <span class="input-group-text bg-white border-end-0">🔍</span>
           <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="ရှာဖွေရန်...">
         </div>
-        <div class="row" id="productGrid">
-   <div class="hero-image-grid-container mt-5">
+  <div class="row" id="productGrid">
+  
+  <div class="hero-image-grid-container mt-5">
     <div class="hero-image-grid">
         <div class="hero-img-box">
-            <img src="path/to/your/image1.jpg" alt="Product 1" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 1</span>
+            <img src="https://m.media-amazon.com/images/I/71xpS8eL7-L._AC_SL1500_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Cookware</span>
         </div>
         <div class="hero-img-box">
-            <img src="path/to/your/image2.jpg" alt="Product 2" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 2</span>
+            <img src="https://m.media-amazon.com/images/I/61S9aVnS0LL._AC_SL1500_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Electronics</span>
         </div>
         <div class="hero-img-box">
-            <img src="path/to/your/image3.jpg" alt="Product 3" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 3</span>
+            <img src="https://m.media-amazon.com/images/I/81v7T6m-6TL._AC_SL1500_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Home Decor</span>
         </div>
         <div class="hero-img-box">
-            <img src="path/to/your/image4.jpg" alt="Product 4" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 4</span>
+            <img src="https://m.media-amazon.com/images/I/51-m79S-xGL._AC_SL1000_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Kitchen</span>
         </div>
         <div class="hero-img-box">
-            <img src="path/to/your/image5.jpg" alt="Product 5" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 5</span>
+            <img src="https://m.media-amazon.com/images/I/61OAn7vLOnL._AC_SL1000_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Appliances</span>
         </div>
         <div class="hero-img-box">
-            <img src="path/to/your/image6.jpg" alt="Product 6" class="img-fluid">
-            <span class="img-label text-center">PRODUCT 6</span>         
-          </div>
-      </div>
+            <img src="https://m.media-amazon.com/images/I/71Lsh9C1N8L._AC_SL1500_.jpg" alt="Product" class="img-fluid">
+            <span class="img-label">Accessories</span>
+        </div>
     </div>
   </div>
-
   <script>
     let allProducts = []; 
     let activeVendor = 'အားလုံး';
