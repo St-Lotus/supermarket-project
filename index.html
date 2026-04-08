@@ -140,28 +140,43 @@ body {
 
 .text-orange { color: #f39c12; } /* ခေါင်းစဉ်အရောင်အတွက် */
 
-footer {
-    clear: both; /* အပေါ်က Float ဖြစ်နေတာတွေကို ရှင်းထုတ်ဖို့ပါ */
+.main-footer {
+    background-color: #ffffff !important; /* နောက်ခံကို အဖြူရောင်ဖြစ်စေရန် */
+    padding: 50px 0 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid #eee;
+    color: #333 !important; /* စာသားကို အမည်းရောင်ဖြစ်စေရန် */
     position: relative;
-    z-index: 10;
-    background-color: white !important;
+    z-index: 99;
 }
 
-.text-orange {
-    color: #f39c12 !important;
+.main-footer h6 {
+    color: #f39c12; /* ခေါင်းစဉ်ကို လိမ္မော်ရောင်ထားရန် */
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
-.footer-links li a {
+.main-footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.main-footer ul li a {
+    color: #666;
     text-decoration: none;
-    color: #555;
     font-size: 14px;
+    line-height: 2.5;
 }
 
-.footer-links li a:hover {
-    color: #f39c12;
-    padding-left: 5px;
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+    padding-top: 20px;
+    font-size: 13px;
+    color: #888;
 }
-
+    
 .nav-link {
     font-size: 15px;
     font-weight: 500;
@@ -215,45 +230,6 @@ footer {
 
     <div id="product-container" class="container mt-5">
         </div>
-
-    <footer class="bg-white pt-5 pb-3 border-top mt-5" style="display: block !important; visibility: visible !important;">
-        <div class="container">
-            <div class="row text-dark">
-                <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold text-orange mb-3">သတင်းအချက်အလက်များ</h6>
-                    <ul class="list-unstyled lh-lg footer-links">
-                        <li><a href="#">ကျွန်ုပ်တို့အကြောင်း</a></li>
-                        <li><a href="#">မေးလေ့ရှိသော မေးခွန်းများ</a></li>
-                        <li><a href="#">စည်းမျဉ်းစည်းကမ်းများ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold text-orange mb-3">ကျွန်ုပ်အကောင့်</h6>
-                    <ul class="list-unstyled lh-lg footer-links">
-                        <li><a href="#">အော်ဒါမှတ်တမ်း</a></li>
-                        <li><a href="#">စိတ်ကြိုက်စာရင်း</a></li>
-                        <li><a href="#">အော်ဒါ စစ်ဆေးရန်</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold text-orange mb-3">ပစ္စည်းအမျိုးအစားများ</h6>
-                    <ul class="list-unstyled lh-lg footer-links">
-                        <li><a href="#">စားသောက်ကုန်များ</a></li>
-                        <li><a href="#">အိမ်သုံးပစ္စည်းများ</a></li>
-                        <li><a href="#">ဆက်စပ်ပစ္စည်းများ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold text-orange mb-3">ဆက်သွယ်ရန်</h6>
-                    <p class="small mb-1">📞 (+959) 767755710</p>
-                    <p class="small mb-1">✉️ stlotusittgi@gmail.com</p>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="120" class="mt-2">
-                </div>
-            </div>
-            <hr>
-            <p class="text-center small text-muted">© 2024 ST.LOTUS SUPERMARKET. All Rights Reserved.</p>
-        </div>
-    </footer>
 
             <div class="col-md-5 mt-5 mt-md-0">
                 <div class="hero-image-grid">
@@ -414,5 +390,42 @@ footer {
     <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
     <img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
   </div>
+  <div style="clear: both;"></div> <footer class="main-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6>သတင်းအချက်အလက်များ</h6>
+                    <ul>
+                        <li><a href="#">ကျွန်ုပ်တို့အကြောင်း</a></li>
+                        <li><a href="#">မေးလေ့ရှိသော မေးခွန်းများ</a></li>
+                        <li><a href="#">စည်းမျဉ်းစည်းကမ်းများ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>ကျွန်ုပ်အကောင့်</h6>
+                    <ul>
+                        <li><a href="#">အော်ဒါမှတ်တမ်း</a></li>
+                        <li><a href="#">စိတ်ကြိုက်စာရင်း</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>ပစ္စည်းအမျိုးအစားများ</h6>
+                    <ul>
+                        <li><a href="#">စားသောက်ကုန်များ</a></li>
+                        <li><a href="#">အိမ်သုံးပစ္စည်းများ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>ဆက်သွယ်ရန်</h6>
+                    <p>📞 (+959) 767755710</p>
+                    <p>✉️ stlotusittgi@gmail.com</p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="110">
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 ST.LOTUS SUPERMARKET. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
   </body>
 </html>
