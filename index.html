@@ -12,15 +12,16 @@
     .product-img { height: 180px; width: 100%; object-fit: contain; padding: 10px; background-color: #ffffff; }
 /* ၁။ Website တစ်ခုလုံးကို ပုံသေ အကျယ်သတ်မှတ်ခြင်း */
 body {
-    min-width: 1600px !important; /* Zoom ဘယ်လောက်ဆွဲဆွဲ ဒီအကျယ်အောက် မကျသွားအောင် တားထားတာပါ */
-    overflow-x: auto !important;
+    min-width: auto !important; /* Fixed width ကို ဖြုတ်လိုက်တာပါ */
+    overflow-x: hidden; /* ဘေးတိုက် scroll မဖြစ်အောင်ပါ */
     background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
 /* ၂။ Sidebar နဲ့ Main Content ကို Flex နဲ့ ခွဲခြင်း (ပုံ ၁ ထပ်နေတာကို ဖြေရှင်းရန်) */
 .container-fluid {
-    display: flex !important;
-    flex-wrap: nowrap !important; /* ဘယ်လိုမှ အောက်ကို ဆင်းမသွားအောင်ပါ */
-    width: 1600px;
+    display: block !important; /* Flex ကို ခဏဖြုတ်ပြီး စမ်းကြည့်ပါ */
+    width: 100% !important;
     margin: 0 auto;
 }
 /* ၃။ ဘယ်ဘက် Sidebar ကို အသေထားခြင်း */
@@ -68,12 +69,14 @@ body {
     flex-direction: column;
     height: 100%;
 }
+    
 .stock-code {
     margin-top: auto;           /* စာသားတွေ ဘယ်လောက်တိုတို အောက်ခြေကို တွန်းချထားမှာပါ */
     font-weight: bold;
     color: #d9534f;
     padding-top: 15px;
 }
+    
 #loginOverlay {
     position: fixed !important; /* Screen ပေါ်မှာ အမြဲကပ်နေစေဖို့ပါ */
     top: 0;
@@ -86,6 +89,7 @@ body {
     align-items: center;        /* Login Box ကို အလယ်တည့်တည့် ရောက်စေဖို့ပါ */
     z-index: 99999 !important;  /* အခြားအရာအားလုံးရဲ့ အပေါ်မှာ ရှိနေစေဖို့ပါ */
 }
+    
 .login-box {
     background: white;
     padding: 30px;
@@ -141,13 +145,12 @@ body {
 .text-orange { color: #f39c12; } /* ခေါင်းစဉ်အရောင်အတွက် */
 
 .main-footer {
-    background-color: #ffffff !important; /* နောက်ခံကို အဖြူရောင်ဖြစ်စေရန် */
-    padding: 50px 0 20px 0;
+    background-color: #ffffff !important;
+    width: 100%;
+    padding: 40px 15px;
     margin-top: 50px;
     border-top: 1px solid #eee;
-    color: #333 !important; /* စာသားကို အမည်းရောင်ဖြစ်စေရန် */
-    position: relative;
-    z-index: 99;
+    display: block; /* ဘေးကပ်မနေအောင်ပါ */
 }
 
 .main-footer h6 {
@@ -390,7 +393,8 @@ body {
     <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
     <img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
   </div>
-  <div style="clear: both;"></div> <footer class="main-footer">
+  <div style="clear: both;"></div> 
+  <footer class="main-footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
