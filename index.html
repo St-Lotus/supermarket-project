@@ -83,7 +83,7 @@
 <!-- ၄။ JavaScript Section -->
 <script>
     // သင့် Google Sheet မှ ရလာသော CSV Link ကို အောက်ပါနေရာတွင် ထည့်ပါ
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1OdWkVx1IIra7fZ2vXZhA7xlBKfSji5fc0Sp-GH6eQDc/edit?usp=sharing'; 
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1OdWkVx1IIra7fZ2vXZhA7xlBKfSji5fc0Sp-GH6eQDc/export?format=csv'; 
     
     let allProducts = []; // Data တွေကို Memory ထဲ သိမ်းထားဖို့ Variable
 
@@ -93,39 +93,42 @@
             const response = await fetch(sheetUrl);
             const data = await response.text();
             
-            // CSV စာကြောင်းများကို ခွဲထုတ်ခြင်း
+            // Google ရဲ့ internal code တွေ ပါလာရင် ဖယ်ထုတ်ဖို့ စစ်ဆေးခြင်း
+            if (data.includes('<!DOCTYPE') || data.includes('google.docs')) {
+                throw new Error("ကျေးဇူးပြု၍ မှန်ကန်သော CSV Export Link ကို သုံးပေးပါ။");
+            }
+
             const rows = data.split('\n').slice(1); 
             const grid = document.getElementById('productGrid');
-            const vendors = new Set(); // Vendor နာမည် ထပ်နေတာတွေ ဖယ်ဖို့
+            const vendors = new Set(); 
             
-            allProducts = []; // စာရင်းအဟောင်း ရှင်းထုတ်
+            allProducts = []; 
 
             rows.forEach(row => {
                 const columns = row.split(',');
-                if(columns.length < 5) return; 
+                // Column ၅ ခု မပြည့်ရင် သို့မဟုတ် code နဲ့ name မပါရင် မထည့်ဘူး
+                if(columns.length < 5 || !columns[0] || columns[0].includes('<!DOC')) return; 
 
                 const p = {
-                    code: columns[0] ? columns[0].trim() : '',
-                    en: columns[1] ? columns[1].trim() : '',
-                    mm: columns[2] ? columns[2].trim() : '',
-                    vendor: columns[3] ? columns[3].trim() : '',
-                    img: columns[4] ? columns[4].trim() : ''
+                    code: columns[0] ? columns[0].trim().replace(/"/g, "") : '',
+                    en: columns[1] ? columns[1].trim().replace(/"/g, "") : '',
+                    mm: columns[2] ? columns[2].trim().replace(/"/g, "") : '',
+                    vendor: columns[3] ? columns[3].trim().replace(/"/g, "") : '',
+                    img: columns[4] ? columns[4].trim().replace(/"/g, "") : ''
                 };
 
-                if(p.code || p.en) {
+                if(p.code) {
                     allProducts.push(p);
                     if(p.vendor) vendors.add(p.vendor);
                 }
             });
 
-            // Website ပေါ်မှာ Card တွေ ထုတ်ပြခြင်း
             renderProducts(allProducts);
-            // Sidebar မှာ Vendor Button တွေ ထည့်ခြင်း
             renderVendors(vendors);
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            document.getElementById('productGrid').innerHTML = `<div class="alert alert-danger w-100">Data ဆွဲယူရာတွင် အမှားအယွင်းရှိနေပါသည်။ (CSV URL မှန်မမှန် ပြန်စစ်ပေးပါ)</div>`;
+            document.getElementById('productGrid').innerHTML = `<div class="alert alert-danger w-100">Google Sheet Link မှားယွင်းနေပါသည်။ Link ကို /export?format=csv ပုံစံပြောင်းလဲပြီး ပြန်စမ်းကြည့်ပါ။</div>`;
         }
     }
 
