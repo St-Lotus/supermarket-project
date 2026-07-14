@@ -1,435 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ST.LOTUS SUPERMARKET Inventory</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .product-card { transition: transform 0.2s; border: 1px solid #eee !important; border-radius: 12px; overflow: hidden; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
-    .vendor-sidebar { position: sticky; top: 80px; }
-    .product-img { height: 180px; width: 100%; object-fit: contain; padding: 10px; background-color: #ffffff; }
-/* ၁။ Website တစ်ခုလုံးကို ပုံသေ အကျယ်သတ်မှတ်ခြင်း */
-body {
-    min-width: auto !important; /* Fixed width ကို ဖြုတ်လိုက်တာပါ */
-    overflow-x: hidden; /* ဘေးတိုက် scroll မဖြစ်အောင်ပါ */
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-/* ၂။ Sidebar နဲ့ Main Content ကို Flex နဲ့ ခွဲခြင်း (ပုံ ၁ ထပ်နေတာကို ဖြေရှင်းရန်) */
-.container-fluid {
-    display: block !important; /* Flex ကို ခဏဖြုတ်ပြီး စမ်းကြည့်ပါ */
-    width: 100% !important;
-    margin: 0 auto;
-}
-/* ၃။ ဘယ်ဘက် Sidebar ကို အသေထားခြင်း */
-.vendor-sidebar {
-    width: 280px !important;
-    min-width: 280px !important;
-    position: sticky;
-    top: 20px;
-    height: 90vh;
-    overflow-y: auto;
-    flex-shrink: 0; /* Zoom ချဲ့ရင်လည်း ကျုံ့မသွားအောင်ပါ */
-}
-/* Product Card ကို ပုံ ၂ အတိုင်း ပြားပြားလေးနဲ့ Modern ဖြစ်အောင် ပြင်ခြင်း */
-.product-card {
-    width: 300px !important;
-    border: none !important;
-    border-radius: 0 !important; /* ဒေါင့်ချိုးဖျောက်ပါ */
-    margin: 15px !important;
-    background: #fff;
-    transition: transform 0.3s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-}
-
-.product-img {
-    height: 250px !important;
-    background-color: #f8f8f8;
-    object-fit: contain;
-    padding: 20px;
-}
-/* Container ကို အလယ်တည့်တည့်ပြန်ပို့ခြင်း */
-#product-container {
-    display: flex !important;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 40px 0;
-    max-width: 1400px;
-    margin: 0 auto !important;
-}
-/* ၆။ Stock Code ကို Card ရဲ့ အောက်ခြေမှာ အမြဲရှိနေစေရန် */
-.card-body {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ST. LOTUS SUPERMARKET - Inventory</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-.stock-code {
-    margin-top: auto;           /* စာသားတွေ ဘယ်လောက်တိုတို အောက်ခြေကို တွန်းချထားမှာပါ */
-    font-weight: bold;
-    color: #d9534f;
-    padding-top: 15px;
-}
-    
-#loginOverlay {
-    position: fixed !important; /* Screen ပေါ်မှာ အမြဲကပ်နေစေဖို့ပါ */
-    top: 0;
-    left: 0;
-    width: 100vw !important;    /* Browser ရဲ့ အကျယ်အပြည့် ယူလိုက်တာပါ */
-    height: 100vh !important;   /* Browser ရဲ့ အမြင့်အပြည့် ယူလိုက်တာပါ */
-    background-color: rgba(255, 255, 255, 0.98); /* နောက်ခံကို အဖြူရောင် ခပ်ပျစ်ပျစ် ထားပါ */
-    display: flex;
-    justify-content: center;    /* Login Box ကို အလယ်တည့်တည့် ရောက်စေဖို့ပါ */
-    align-items: center;        /* Login Box ကို အလယ်တည့်တည့် ရောက်စေဖို့ပါ */
-    z-index: 99999 !important;  /* အခြားအရာအားလုံးရဲ့ အပေါ်မှာ ရှိနေစေဖို့ပါ */
-}
-    
-.login-box {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    width: 350px;               /* Login Box ရဲ့ အကျယ်ကို ပုံသေထားပါ */
-    text-align: center;
-}
-/* ပုံများကို တစ်တန်းတည်း ညီစီစေရန် (CSS Grid) */
-.hero-image-grid-container {
-    width: 100% !important;
-    display: flex;
-    justify-content: center;
-    padding-bottom: 20px;
-}
-
-.hero-image-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* ၂ ခုစီ ဘေးချင်းယှဉ်ပြပါမယ် */
-    gap: 15px;
-}
-
-.hero-img-box {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    height: 150px;
-}
-
-.hero-img-box:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-}
-
-.hero-img-box img {
-    max-height: 100px;
-    width: 100%;
-    object-fit: cover;
-    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); /* ပုံတွေကို ပေါ်လွင်စေဖို့ Shadow ထည့်ပေးထားပါတယ် */
-}
-
-.img-label {
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    display: block;
-}
-
-.text-orange { color: #f39c12; } /* ခေါင်းစဉ်အရောင်အတွက် */
-
-.main-footer {
-    background-color: #ffffff !important;
-    width: 100%;
-    padding: 40px 15px;
-    margin-top: 50px;
-    border-top: 1px solid #eee;
-    display: block; /* ဘေးကပ်မနေအောင်ပါ */
-}
-
-.main-footer h6 {
-    color: #f39c12; /* ခေါင်းစဉ်ကို လိမ္မော်ရောင်ထားရန် */
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.main-footer ul {
-    list-style: none;
-    padding: 0;
-}
-
-.main-footer ul li a {
-    color: #666;
-    text-decoration: none;
-    font-size: 14px;
-    line-height: 2.5;
-}
-
-.footer-bottom {
-    text-align: center;
-    border-top: 1px solid #eee;
-    margin-top: 30px;
-    padding-top: 20px;
-    font-size: 13px;
-    color: #888;
-}
-    
-.nav-link {
-    font-size: 15px;
-    font-weight: 500;
-}
-
-.nav-link:hover {
-    color: #f39c12 !cite;
-}    
-  </style>
+    <style>
+        /* CSS Custom Styles */
+        .product-card { 
+            transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        .product-card:hover { 
+            transform: scale(1.03);
+            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+        }
+        .vendor-sidebar { 
+            position: sticky; 
+            top: 70px; 
+        }
+        .card-img-top {
+            height: 140px !important;
+            object-fit: contain;
+            background-color: #f8f9fa;
+        }
+        .card-title-area {
+            min-height: 42px; /* စာတန်းရှည်ရင် ကတ်အမြင့်ချင်း ညီနေအောင် ထိန်းပေးရန် */
+        }
+    </style>
 </head>
 <body class="bg-light">
 
-  <div id="loginOverlay">
-    <div class="card shadow-lg p-4 text-center" style="max-width: 380px; width: 90%; border-radius: 15px;">
-      <h3 class="fw-bold mb-2">ST.LOTUS</h3>
-      <p class="text-muted mb-4 small">Inventory Access Control</p>
-      <input type="password" id="staffPassword" class="form-control mb-3 py-2 text-center" placeholder="Password ရိုက်ထည့်ပါ">
-      <button class="btn btn-dark w-100 py-2" onclick="checkPassword()">Login</button>
-      <p id="loginError" class="text-danger small mt-3" style="display: none;">❌ Password မှားနေပါသည်။</p>
-    </div>
-  </div>
-
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black py-3">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">ST.LOTUS SUPERMARKET</a>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link px-3" href="#">ပင်မစာမျက်နှာ</a></li>
-                <li class="nav-item"><a class="nav-link px-3" href="#">ပစ္စည်းအမျိုးအစားများ</a></li>
-                <li class="nav-item"><a class="nav-link px-3" href="#">အရောင်းရဆုံး</a></li>
-                <li class="nav-item"><a class="nav-link px-3" href="#">အထူးလျှော့စျေးများ</a></li>
-                <li class="nav-item"><a class="nav-link px-3" href="#">ဆိုင်များ</a></li>
-            </ul>
-        </div>
-
-        <div class="ms-auto d-flex align-items-center">
-            <div class="input-group" style="width: 250px;">
-                <input type="text" class="form-control bg-light border-0 rounded-pill ps-3" placeholder="Search product...">
-            </div>
-        </div>
+<!-- ၁။ Navbar (Company Name & Logo) -->
+<nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <!-- Logo နေရာမှာ ကိုယ့် Logo link ထည့်ပါ -->
+            <img src="https://via.placeholder.com/40" alt="Logo" width="40" height="40" class="d-inline-block align-text-top me-2 rounded">
+            <strong>ST. LOTUS SUPERMARKET</strong>
+        </a>
     </div>
 </nav>
 
-<div class="hero-section bg-black text-white py-5">
-        <div class="container py-5 text-center"> <p class="text-danger mb-2">အခုပဲ လာရောက်ဝယ်ယူနိုင်ပါပြီ။</p>
-            <h1 class="display-3 fw-bold">သင်နှစ်သက်သမျှ အရာအားလုံးကို<br>တစ်နေရာတည်းမှာ ရရှိနိုင်ဖို့။</h1>
-            <button class="btn btn-primary px-4 py-2 mt-4 rounded-0">အခုပဲ ဝယ်ယူရန်</button>
-        </div>
-    </div>
-
-    <div id="product-container" class="container mt-5">
-        </div>
-
-            <div class="col-md-5 mt-5 mt-md-0">
-                <div class="hero-image-grid">
-                    <div class="hero-img-box">
-                        <img src="images/Stlotus 1.jpg" alt="SHOP">
-                    </div>
-                    <div class="hero-img-box">
-                        <img src="images/Stlotus 3.jpg" alt="Electronics">
-                    </div>
-                    <div class="hero-img-box">
-                        <img src="images/Stlotus 4.jpg" alt="Snack">
-                    </div>
-                    <div class="hero-img-box">
-                        <img src="images/Stlotus 5.jpg" alt="Household">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-  <div class="container-fluid px-4 mt-4">
+<!-- Dashboard Wrapper (Fluid Layout သုံးထားလို့ ဘေးနှစ်ဖက် ညှိပြီးသားဖြစ်ပါမယ်) -->
+<div class="container-fluid px-4 mt-4">
     <div class="row">
-      <div class="col-md-3 mb-4">
         
-      <div class="col-md-9">
-        <div class="input-group mb-4 shadow-sm">
-          <span class="input-group-text bg-white border-end-0">🔍</span>
-          <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="ရှာဖွေရန်...">
+        <!-- ၂။ Sidebar (Main Vendors List) -->
+        <div class="col-xl-2 col-md-3 mb-4">
+            <div class="vendor-sidebar">
+                <h5 class="fw-bold text-muted mb-3" style="font-size: 1.1rem;">Main Vendors</h5>
+                <div class="list-group shadow-sm" id="vendorList">
+                    <!-- JavaScript က Vendor Button တွေကို ဒီထဲမှာ အလိုအလျောက် ထည့်ပေးပါလိမ့်မယ် -->
+                    <button class="list-group-item list-group-item-action active" onclick="filterVendor('all')">အားလုံး</button>
+                </div>
+            </div>
         </div>
-  
-  <div class="hero-image-grid-container mt-5">
-    <div class="hero-image-grid">
-        <div class="hero-img-box">
-            <img src="https://www.pngarts.com/files/3/Coca-Cola-PNG-Image-with-Transparent-Background.png" alt="Drink">
-            <span class="img-label">Soft Drinks</span>
-        </div>
-        <div class="hero-img-box">
-            <img src="https://www.pngmart.com/files/7/Headphone-PNG-Transparent-Picture.png" alt="Headphone">
-            <span class="img-label">Electronics</span>
-        </div>
-        <div class="hero-img-box">
-            <img src="https://www.pngarts.com/files/4/Potato-Chips-PNG-Transparent-Image.png" alt="Snack">
-            <span class="img-label">Snacks</span>
-        </div>
-        <div class="hero-img-box">
-            <img src="https://www.pngmart.com/files/16/Liquid-Detergent-Bottle-PNG-Transparent.png" alt="Home">
-            <span class="img-label">Household</span>
-        </div>
-        <div class="hero-img-box">
-            <img src="https://www.pngmart.com/files/2/Shampoo-PNG-Transparent-Image.png" alt="Care">
-            <span class="img-label">Personal Care</span>
+
+        <!-- ၃။ Main Content (Search Bar & Product Cards) -->
+        <div class="col-xl-10 col-md-9">
+            
+            <!-- Search Bar -->
+            <div class="input-group mb-4 shadow-sm">
+                <span class="input-group-text bg-white border-end-0">🔍</span>
+                <input type="text" id="searchInput" class="form-control border-start-0 py-2" placeholder="အမည် (သို့) ကုတ် (သို့) အစစာလုံးဖြင့် ရှာရန်..." onkeyup="searchProduct()">
+            </div>
+
+            <!-- Products Grid (တစ်တန်းမှာ ၄ ခုကနေ ၆ ခုအထိ ကျစ်ကျစ်လစ်လစ် ပေါ်မယ့်စနစ်) -->
+            <div class="row g-3" id="productGrid">
+                <!-- Google Sheet မှ အချက်အလက်များကို ဤနေရာတွင် လာပြပါမည် -->
+                <div class="text-center my-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">အချက်အလက်များ ဆွဲယူနေပါသည်...</p>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
 
-  <script>
-    let allProducts = []; 
-    let activeVendor = 'အားလုံး';
+<!-- ၄။ JavaScript Section -->
+<script>
+    // သင့် Google Sheet မှ ရလာသော CSV Link ကို အောက်ပါနေရာတွင် ထည့်ပါ
+    const sheetUrl = 'YOUR_GOOGLE_SHEET_CSV_URL_HERE'; 
+    
+    let allProducts = []; // Data တွေကို Memory ထဲ သိမ်းထားဖို့ Variable
 
-    // Password စစ်ဆေးသည့် Function
-    function checkPassword() {
-      const inputPass = document.getElementById('staffPassword').value;
-      const correctPass = "lotus123"; // သင်သတ်မှတ်ထားသော Password
-
-      if (inputPass === correctPass) {
-        document.getElementById('loginOverlay').style.display = 'none'; // Login အကွက်ဖျောက်ခြင်း
-        loadProducts(); // Password မှန်မှ Data စဆွဲခြင်း
-      } else {
-        document.getElementById('loginError').style.display = 'block';
-      }
-    }
-
-    // Enter Key နှိပ်ရင်လည်း Login ဝင်စေရန်
-    document.getElementById('staffPassword').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') checkPassword();
-    });
-
+    // Google Sheet မှ Data လှမ်းယူခြင်း
     async function loadProducts() {
-      try {
-        const response = await fetch('https://supermarket-project-17xz.onrender.com/api/products');
-        allProducts = await response.json();
-        renderProducts(allProducts);
-      } catch (error) {
-        console.error("Error loading data:", error);
-      }
+        try {
+            const response = await fetch(sheetUrl);
+            const data = await response.text();
+            
+            // CSV စာကြောင်းများကို ခွဲထုတ်ခြင်း
+            const rows = data.split('\n').slice(1); 
+            const grid = document.getElementById('productGrid');
+            const vendors = new Set(); // Vendor နာမည် ထပ်နေတာတွေ ဖယ်ဖို့
+            
+            allProducts = []; // စာရင်းအဟောင်း ရှင်းထုတ်
+
+            rows.forEach(row => {
+                const columns = row.split(',');
+                if(columns.length < 5) return; 
+
+                const p = {
+                    code: columns[0] ? columns[0].trim() : '',
+                    en: columns[1] ? columns[1].trim() : '',
+                    mm: columns[2] ? columns[2].trim() : '',
+                    vendor: columns[3] ? columns[3].trim() : '',
+                    img: columns[4] ? columns[4].trim() : ''
+                };
+
+                if(p.code || p.en) {
+                    allProducts.push(p);
+                    if(p.vendor) vendors.add(p.vendor);
+                }
+            });
+
+            // Website ပေါ်မှာ Card တွေ ထုတ်ပြခြင်း
+            renderProducts(allProducts);
+            // Sidebar မှာ Vendor Button တွေ ထည့်ခြင်း
+            renderVendors(vendors);
+
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            document.getElementById('productGrid').innerHTML = `<div class="alert alert-danger w-100">Data ဆွဲယူရာတွင် အမှားအယွင်းရှိနေပါသည်။ (CSV URL မှန်မမှန် ပြန်စစ်ပေးပါ)</div>`;
+        }
     }
 
-    // ပုံကို အကြီးပြရန်
-    function openModal(src) {
-      document.getElementById('imageModal').style.display = 'flex';
-      document.getElementById('modalImg').src = src;
-  }
+    // HTML Cards များ တည်ဆောက်ပြသခြင်း
+    function renderProducts(productsList) {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = ''; 
 
-    // ပုံကို ပြန်ပိတ်ရန်
-      function closeModal() {
-      document.getElementById('imageModal').style.display = 'none';
-  }
+        if(productsList.length === 0) {
+            grid.innerHTML = `<div class="text-center text-muted my-5 w-100">ရှာဖွေမှုမတွေ့ပါ။</div>`;
+            return;
+        }
 
-    function renderProducts(products) {
-      const grid = document.getElementById('productGrid');
-      grid.innerHTML = '';
-      if (products.length === 0) {
-        grid.innerHTML = '<div class="col-12 text-center mt-5 text-muted"><h5>ရှာဖွေနေသော ပစ္စည်းမရှိပါ။</h5></div>';
-        return;
-      }
-      products.forEach(p => {
-        grid.innerHTML += `
-          <div class="col-md-4 col-lg-3 mb-4">
-            <div class="card h-100 shadow-sm product-card border-0">
-              <img src="${p.image_url}" 
-                   class="card-img-top product-img" 
-                   style="cursor: pointer;" 
-                   onclick="openModal('${p.image_url}')"
-                   onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
-              <div class="card-body">
-                <h6 class="text-primary small fw-bold">${p.category || 'General'}</h6>
-                <h5 class="card-title h6 fw-bold">${p.name_en}</h5>
-                <p class="stock-code-container">${p.name_mm}</p>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <span class="fw-bold text-danger" style="font-size: 0.85rem;">Stock: ${p.price}</span>
-                  <span class="badge bg-light text-dark border small">${p.vendor || 'Unknown'}</span>
+        productsList.forEach(p => {
+            grid.innerHTML += `
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 product-item" data-vendor="${p.vendor}">
+                    <div class="card h-100 shadow-sm border-0 product-card">
+                        <div class="p-2">
+                            <img src="${p.img}" class="card-img-top rounded" alt="${p.en}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                        </div>
+                        <div class="card-body p-2 text-center">
+                            <h6 class="text-primary small mb-1" style="font-size: 0.75rem;">${p.code}</h6>
+                            <div class="card-title-area">
+                                <p class="fw-bold mb-0 text-dark text-truncate-2" style="font-size: 0.85rem; line-height: 1.2;">${p.en}</p>
+                                <p class="text-muted small mb-1 text-truncate" style="font-size: 0.78rem;">${p.mm}</p>
+                            </div>
+                            <span class="badge bg-light text-dark border mt-1" style="font-size: 0.65rem;">${p.vendor}</span>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>`;
-      });
+            `;
+        });
     }
 
-    function applyFilters() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = allProducts.filter(p => {
-        const nameEN = (p.name_en || "").toLowerCase();
-        const nameMM = (p.name_mm || "");
-        const productVendor = (p.vendor || "").trim();
-        const matchesSearch = nameEN.includes(searchTerm) || nameMM.includes(searchTerm);
-        const matchesVendor = (activeVendor === 'အားလုံး') || (productVendor === activeVendor);
-        return matchesSearch && matchesVendor;
-      });
-      renderProducts(filtered);
+    // Sidebar Vendor Buttons များ တည်ဆောက်ခြင်း
+    function renderVendors(vendorSet) {
+        const vendorListDiv = document.getElementById('vendorList');
+        // 'အားလုံး' ခလုတ်ကလွဲလို့ ကျန်တာရှင်းမယ်
+        vendorListDiv.innerHTML = `<button class="list-group-item list-group-item-action active shadow-none" onclick="filterVendor('all', this)">အားလုံး</button>`;
+        
+        vendorSet.forEach(vendor => {
+            vendorListDiv.innerHTML += `<button class="list-group-item list-group-item-action shadow-none" onclick="filterVendor('${vendor}', this)">${vendor}</button>`;
+        });
     }
 
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    // instant Search စနစ် (နာမည်၊ ကုတ်၊ စာလုံးအစဖြင့် ရှာနိုင်သည်)
+    function searchProduct() {
+        let input = document.getElementById('searchInput').value.toLowerCase().trim();
+        
+        // ဘေးတန်း ခလုတ်တွေကို Active ဖြုတ်ပြီး 'အားလုံး' ကို ပြန်ရွေးပေးခြင်း
+        const buttons = document.querySelectorAll('#vendorList button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttons[0].classList.add('active');
 
-    document.querySelectorAll('.list-group-item').forEach(item => {
-      item.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('.list-group-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        activeVendor = this.innerText.trim();
-        applyFilters();
-      });
-    });
+        let filtered = allProducts.filter(p => {
+            return p.en.toLowerCase().includes(input) || 
+                   p.mm.toLowerCase().includes(input) || 
+                   p.code.toLowerCase().includes(input);
+        });
+        
+        renderProducts(filtered);
+    }
 
-    // loadProducts() ကို ဤနေရာမှ ဖြုတ်လိုက်ပါပြီ (Password မှန်မှ ခေါ်မည်ဖြစ်သောကြောင့်ဖြစ်သည်)
-  </script>
-    <div id="imageModal" style="display: none; position: fixed; z-index: 10000; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); justify-content: center; align-items: center; cursor: zoom-out;" onclick="closeModal()">
-    <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
-    <img id="modalImg" style="max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5);">
-  </div>
-  <div style="clear: both;"></div> 
-  <footer class="main-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h6>သတင်းအချက်အလက်များ</h6>
-                    <ul>
-                        <li><a href="#">ကျွန်ုပ်တို့အကြောင်း</a></li>
-                        <li><a href="#">မေးလေ့ရှိသော မေးခွန်းများ</a></li>
-                        <li><a href="#">စည်းမျဉ်းစည်းကမ်းများ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6>ကျွန်ုပ်အကောင့်</h6>
-                    <ul>
-                        <li><a href="#">အော်ဒါမှတ်တမ်း</a></li>
-                        <li><a href="#">စိတ်ကြိုက်စာရင်း</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6>ပစ္စည်းအမျိုးအစားများ</h6>
-                    <ul>
-                        <li><a href="#">စားသောက်ကုန်များ</a></li>
-                        <li><a href="#">အိမ်သုံးပစ္စည်းများ</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h6>ဆက်သွယ်ရန်</h6>
-                    <p>📞 (+959) 767755710</p>
-                    <p>✉️ stlotusittgi@gmail.com</p>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="110">
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2024 ST.LOTUS SUPERMARKET. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
-  </body>
+    // Vendor အလိုက် Filter လုပ်ခြင်း
+    function filterVendor(vendorName, element) {
+        // Search Box ကို ပြန်ရှင်းမယ်
+        document.getElementById('searchInput').value = '';
+
+        // Active Button အရောင် ပြောင်းလဲခြင်း
+        const buttons = document.querySelectorAll('#vendorList button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        element.classList.add('active');
+
+        if (vendorName === 'all') {
+            renderProducts(allProducts);
+        } else {
+            let filtered = allProducts.filter(p => p.vendor === vendorName);
+            renderProducts(filtered);
+        }
+    }
+
+    // စာမျက်နှာ စပွင့်တာနဲ့ Run မယ်
+    loadProducts();
+</script>
+
+</body>
 </html>
