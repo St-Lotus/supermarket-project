@@ -147,8 +147,11 @@
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 product-item" data-vendor="${p.vendor}">
                     <div class="card h-100 shadow-sm border-0 product-card">
                         <div class="p-2">
-                            <img src="${p.img}" class="card-img-top rounded" alt="${p.en}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-                        </div>
+                            <img src="${p.img}" class="card-img-top rounded" alt="${p.en}" 
+                                 style="height: 150px; object-fit: contain; background: #f8f9fa; cursor: pointer;" 
+                                 onclick="zoomImage('${p.img}', '${p.en} (${p.mm})')"
+                                 onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
+                            </div>
                         <div class="card-body p-2 text-center">
                             <h6 class="text-primary small mb-1" style="font-size: 0.75rem;">${p.code}</h6>
                             <div class="card-title-area">
@@ -210,9 +213,37 @@
         }
     }
 
+    // ပုံကို ကလစ်နှိပ်လျှင် Modal ပွင့်ပြီး ပုံကြီးပြပေးမည့် Function
+    function zoomImage(imgSrc, productName) {
+        // Modal ထဲက img ရဲ့ src ကို ပြောင်းလဲခြင်း
+        document.getElementById('modalImage').src = imgSrc;
+        // Modal ထဲက စာသားခေါင်းစဉ်ကို ပြောင်းလဲခြင်း
+        document.getElementById('modalCaption').innerText = productName;
+    
+        // Bootstrap Modal ကို လှမ်းဖွင့်ခြင်း
+        var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        myModal.show();
+    }
+    
     // စာမျက်နှာ စပွင့်တာနဲ့ Run မယ်
     loadProducts();
 </script>
+
+<!-- Image Preview Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body p-0 text-center position-relative">
+                <!-- ပိတ်မည့် ခလုတ် -->
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- ဓာတ်ပုံကြီး ပေါ်လာမည့်နေရာ -->
+                <img src="" id="modalImage" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;">
+                <!-- ဓာတ်ပုံအောက်တွင် နာမည်ပြရန် (Optional) -->
+                <div id="modalCaption" class="text-white mt-2 fw-bold fs-5"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
