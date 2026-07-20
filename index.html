@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ST. LOTUS SUPERMARKET - Inventory</title>
-
-    <!-- ၁။ Bootstrap 5 CSS (ဒီဇိုင်းနှင့် Layout အတွက်) -->
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- ၂။ Bootstrap 5 JS Bundle (Modal Popup နှင့် အပြန်အလှန်လုပ်ဆောင်မှုများအတွက်) -->
+    <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* CSS Custom Styles */
         .product-card { 
             transition: transform 0.2s, box-shadow 0.2s; 
         }
@@ -36,33 +34,31 @@
 </head>
 <body class="bg-light">
 
-<!-- ၁။ Navbar (Company Name & Logo) -->
+<!-- Navbar -->
 <nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
     <div class="container-fluid px-4">
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <!-- Logo နေရာမှာ ကိုယ့် Logo link ထည့်ပါ -->
             <img src="https://via.placeholder.com/40" alt="Logo" width="40" height="40" class="d-inline-block align-text-top me-2 rounded">
             <strong>ST. LOTUS SUPERMARKET</strong>
         </a>
     </div>
 </nav>
 
-<!-- Dashboard Wrapper (Fluid Layout သုံးထားလို့ ဘေးနှစ်ဖက် ညှိပြီးသားဖြစ်ပါမယ်) -->
+<!-- Dashboard Main Layout -->
 <div class="container-fluid px-4 mt-4">
     <div class="row">
         
-        <!-- ၂။ Sidebar (Main Vendors List) -->
+        <!-- Sidebar Vendors -->
         <div class="col-xl-2 col-md-3 mb-4">
             <div class="vendor-sidebar">
                 <h5 class="fw-bold text-muted mb-3" style="font-size: 1.1rem;">Main Vendors</h5>
                 <div class="list-group shadow-sm" id="vendorList">
-                    <!-- JavaScript က Vendor Button တွေကို ဒီထဲမှာ အလိုအလျောက် ထည့်ပေးပါလိမ့်မယ် -->
-                    <button class="list-group-item list-group-item-action active" onclick="filterVendor('all')">အားလုံး</button>
+                    <button class="list-group-item list-group-item-action active" onclick="filterVendor('all', this)">အားလုံး</button>
                 </div>
             </div>
         </div>
 
-        <!-- ၃။ Main Content (Search Bar & Product Cards) -->
+        <!-- Main Content -->
         <div class="col-xl-10 col-md-9">
             
             <!-- Search Bar -->
@@ -71,9 +67,8 @@
                 <input type="text" id="searchInput" class="form-control border-start-0 py-2" placeholder="အမည် (သို့) ကုတ် (သို့) အစစာလုံးဖြင့် ရှာရန်..." onkeyup="searchProduct()">
             </div>
 
-            <!-- Products Grid (တစ်တန်းမှာ ၄ ခုကနေ ၆ ခုအထိ ကျစ်ကျစ်လစ်လစ် ပေါ်မယ့်စနစ်) -->
+            <!-- Product Grid -->
             <div class="row g-3" id="productGrid">
-                <!-- Google Sheet မှ အချက်အလက်များကို ဤနေရာတွင် လာပြပါမည် -->
                 <div class="text-center my-5">
                     <div class="spinner-border text-primary" role="status"></div>
                     <p class="mt-2 text-muted">အချက်အလက်များ ဆွဲယူနေပါသည်...</p>
@@ -84,24 +79,31 @@
     </div>
 </div>
 
-<!-- ၄။ JavaScript Section -->
+<!-- Image Modal (ပုံကြီးချဲ့ပြသည့် Popup) -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-body p-0 text-center position-relative">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                <img src="" id="modalImage" class="img-fluid rounded shadow-lg" style="max-height: 80vh; object-fit: contain; background-color: #fff;">
+                <div id="modalCaption" class="text-white mt-2 fw-bold fs-5"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Logic -->
 <script>
-    // သင့် Google Sheet မှ ရလာသော CSV Link ကို အောက်ပါနေရာတွင် ထည့်ပါ
+    // သင့် Google Sheet CSV Link ကို အောက်ပါနေရာတွင် ထည့်ပါ
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcio8D-MWOZYDRzX_j7hv79fPpIHW93zOPKtAJGNoqJ_5pkAT1YYnp8yoPwL7wozgiIfXxHKSHwQZj/pub?output=csv'; 
     
-    let allProducts = []; // Data တွေကို Memory ထဲ သိမ်းထားဖို့ Variable
+    let allProducts = [];
 
-    // Google Sheet မှ Data လှမ်းယူခြင်း
     async function loadProducts() {
         try {
             const response = await fetch(sheetUrl);
             const data = await response.text();
             
-            // Google ရဲ့ internal code တွေ ပါလာရင် ဖယ်ထုတ်ဖို့ စစ်ဆေးခြင်း
-            if (data.includes('<!DOCTYPE') || data.includes('google.docs')) {
-                throw new Error("ကျေးဇူးပြု၍ မှန်ကန်သော CSV Export Link ကို သုံးပေးပါ။");
-            }
-
             const rows = data.split('\n').slice(1); 
             const grid = document.getElementById('productGrid');
             const vendors = new Set(); 
@@ -110,8 +112,7 @@
 
             rows.forEach(row => {
                 const columns = row.split(',');
-                // Column ၅ ခု မပြည့်ရင် သို့မဟုတ် code နဲ့ name မပါရင် မထည့်ဘူး
-                if(columns.length < 5 || !columns[0] || columns[0].includes('<!DOC')) return; 
+                if(columns.length < 5 || !columns[0]) return; 
 
                 const p = {
                     code: columns[0] ? columns[0].trim().replace(/"/g, "") : '',
@@ -132,11 +133,10 @@
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            document.getElementById('productGrid').innerHTML = `<div class="alert alert-danger w-100">Google Sheet Link မှားယွင်းနေပါသည်။ Link ကို /export?format=csv ပုံစံပြောင်းလဲပြီး ပြန်စမ်းကြည့်ပါ။</div>`;
+            document.getElementById('productGrid').innerHTML = `<div class="alert alert-danger w-100">Google Sheet မှ Data ဆွဲယူ၍ မရပါ။ CSV Link မှန်မမှန် ပြန်စစ်ပေးပါ၊၊</div>`;
         }
     }
 
-    // HTML Cards များ တည်ဆောက်ပြသခြင်း
     function renderProducts(productsList) {
         const grid = document.getElementById('productGrid');
         grid.innerHTML = ''; 
@@ -148,14 +148,14 @@
 
         productsList.forEach(p => {
             grid.innerHTML += `
-                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 product-item" data-vendor="${p.vendor}">
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 product-item">
                     <div class="card h-100 shadow-sm border-0 product-card">
-                        <div class="p-2">
+                        <div class="p-2 text-center">
                             <img src="${p.img}" class="card-img-top rounded" alt="${p.en}" 
-                                 style="height: 150px; object-fit: contain; background: #f8f9fa; cursor: pointer;" 
+                                 style="cursor: pointer;" 
                                  onclick="zoomImage('${p.img}', '${p.en} (${p.mm})')"
                                  onerror="this.src='https://via.placeholder.com/150?text=No+Image'">
-                            </div>
+                        </div>
                         <div class="card-body p-2 text-center">
                             <h6 class="text-primary small mb-1" style="font-size: 0.75rem;">${p.code}</h6>
                             <div class="card-title-area">
@@ -170,10 +170,8 @@
         });
     }
 
-    // Sidebar Vendor Buttons များ တည်ဆောက်ခြင်း
     function renderVendors(vendorSet) {
         const vendorListDiv = document.getElementById('vendorList');
-        // 'အားလုံး' ခလုတ်ကလွဲလို့ ကျန်တာရှင်းမယ်
         vendorListDiv.innerHTML = `<button class="list-group-item list-group-item-action active shadow-none" onclick="filterVendor('all', this)">အားလုံး</button>`;
         
         vendorSet.forEach(vendor => {
@@ -181,14 +179,12 @@
         });
     }
 
-    // instant Search စနစ် (နာမည်၊ ကုတ်၊ စာလုံးအစဖြင့် ရှာနိုင်သည်)
     function searchProduct() {
         let input = document.getElementById('searchInput').value.toLowerCase().trim();
         
-        // ဘေးတန်း ခလုတ်တွေကို Active ဖြုတ်ပြီး 'အားလုံး' ကို ပြန်ရွေးပေးခြင်း
         const buttons = document.querySelectorAll('#vendorList button');
         buttons.forEach(btn => btn.classList.remove('active'));
-        buttons[0].classList.add('active');
+        if(buttons[0]) buttons[0].classList.add('active');
 
         let filtered = allProducts.filter(p => {
             return p.en.toLowerCase().includes(input) || 
@@ -199,12 +195,9 @@
         renderProducts(filtered);
     }
 
-    // Vendor အလိုက် Filter လုပ်ခြင်း
     function filterVendor(vendorName, element) {
-        // Search Box ကို ပြန်ရှင်းမယ်
         document.getElementById('searchInput').value = '';
 
-        // Active Button အရောင် ပြောင်းလဲခြင်း
         const buttons = document.querySelectorAll('#vendorList button');
         buttons.forEach(btn => btn.classList.remove('active'));
         element.classList.add('active');
@@ -217,37 +210,17 @@
         }
     }
 
-    // ပုံကို ကလစ်နှိပ်လျှင် Modal ပွင့်ပြီး ပုံကြီးပြပေးမည့် Function
+    // Image Zoom Modal Function
     function zoomImage(imgSrc, productName) {
-        // Modal ထဲက img ရဲ့ src ကို ပြောင်းလဲခြင်း
         document.getElementById('modalImage').src = imgSrc;
-        // Modal ထဲက စာသားခေါင်းစဉ်ကို ပြောင်းလဲခြင်း
         document.getElementById('modalCaption').innerText = productName;
-    
-        // Bootstrap Modal ကို လှမ်းဖွင့်ခြင်း
+        
         var myModal = new bootstrap.Modal(document.getElementById('imageModal'));
         myModal.show();
     }
-    
-    // စာမျက်နှာ စပွင့်တာနဲ့ Run မယ်
+
     loadProducts();
 </script>
-
-<!-- Image Preview Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-transparent border-0">
-            <div class="modal-body p-0 text-center position-relative">
-                <!-- ပိတ်မည့် ခလုတ် -->
-                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
-                <!-- ဓာတ်ပုံကြီး ပေါ်လာမည့်နေရာ -->
-                <img src="" id="modalImage" class="img-fluid rounded shadow-lg" style="max-height: 85vh; object-fit: contain;">
-                <!-- ဓာတ်ပုံအောက်တွင် နာမည်ပြရန် (Optional) -->
-                <div id="modalCaption" class="text-white mt-2 fw-bold fs-5"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
