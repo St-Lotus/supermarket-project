@@ -34,13 +34,45 @@
 </head>
 <body class="bg-light">
 
+<!-- Login Modal (Login မဝင်မချင်း ပိတ်ထားမည့် Screen) -->
+<div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold">ST. LOTUS SUPERMARKET - Login</h5>
+            </div>
+            <div class="modal-body p-4">
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Username</label>
+                        <input type="text" id="username" class="form-control py-2" required placeholder="အကောင့်အမည် ထည့်ပါ">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Password</label>
+                        <input type="password" id="password" class="form-control py-2" required placeholder="စကားဝှက် ထည့်ပါ">
+                    </div>
+                    <div id="loginError" class="alert alert-danger d-none py-2" role="alert">
+                        Username သို့မဟုတ် Password မှားယွင်းနေပါသည်။
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Login ဝင်မည်</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Navbar -->
 <nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="https://via.placeholder.com/40" alt="Logo" width="40" height="40" class="d-inline-block align-text-top me-2 rounded">
             <strong>ST. LOTUS SUPERMARKET</strong>
         </a>
+        <!-- အကောင့်အမည် နှင့် Logout ခလုတ် -->
+        <div class="d-flex align-items-center">
+            <span id="userGreeting" class="text-white me-3 small d-none fw-bold"></span>
+            <button id="logoutBtn" class="btn btn-outline-danger btn-sm d-none" onclick="handleLogout()">Logout</button>
+        </div>
     </div>
 </nav>
 
@@ -219,7 +251,63 @@
         myModal.show();
     }
 
-    loadProducts();
+    // ခွင့်ပြုထားသော အကောင့်များနှင့် စကားဝှက်များ
+    const users = {
+        "admin": "123456",
+        "staff": "stlotus2024",
+        "manager": "lotus@123"
+    };
+
+    let loginModalObj;
+
+    // Page ပွင့်ပွင့်ချင်း Login စစ်မည်
+    document.addEventListener("DOMContentLoaded", function() {
+        loginModalObj = new bootstrap.Modal(document.getElementById('loginModal'));
+        
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+        const currentUser = sessionStorage.getItem("currentUser");
+
+        if (!isLoggedIn) {
+            loginModalObj.show();
+        } else {
+            showUserInterface(currentUser);
+            loadProducts(); // Login ဝင်ထားမှ Data ဆွဲယူမည်
+        }
+    });
+
+    // Login ဝင်သည့် စနစ်
+    function handleLogin(event) {
+        event.preventDefault();
+        const userInput = document.getElementById('username').value.trim();
+        const passInput = document.getElementById('password').value.trim();
+        const errorDiv = document.getElementById('loginError');
+
+        if (users[userInput] && users[userInput] === passInput) {
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("currentUser", userInput);
+            
+            errorDiv.classList.add('d-none');
+            loginModalObj.hide();
+            
+            showUserInterface(userInput);
+            loadProducts();
+        } else {
+            errorDiv.classList.remove('d-none');
+        }
+    }
+
+    // User ဝင်ထားကြောင်း UI ပြောင်းလဲခြင်း
+    function showUserInterface(username) {
+        document.getElementById('userGreeting').innerText = `👤 ${username}`;
+        document.getElementById('userGreeting').classList.remove('d-none');
+        document.getElementById('logoutBtn').classList.remove('d-none');
+    }
+
+    // Logout ထွက်သည့် စနစ်
+    function handleLogout() {
+        sessionStorage.clear();
+        location.reload();
+    }
 </script>
 
 </body>
